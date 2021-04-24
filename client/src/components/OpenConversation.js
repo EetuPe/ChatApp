@@ -1,6 +1,10 @@
 import React, { useState, useCallback } from 'react'
 import { Form, InputGroup, Button } from 'react-bootstrap'
 import { useConversations } from '../contexts/ConversationsProvider'
+import { CensorSensor } from 'censor-sensor';
+
+const censor = new CensorSensor();
+censor.setLocale('en')
 
 export default function OpenConversation() {
     const [text, setText] = useState('')
@@ -16,7 +20,7 @@ export default function OpenConversation() {
 
         sendMessage(
             selectedConversation.recipients.map(r => r.id),
-            text
+            censor.cleanProfanityIsh(text)
         )
         setText('')
     }
